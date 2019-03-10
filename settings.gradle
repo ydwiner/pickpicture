@@ -1,0 +1,4 @@
+rootProject.name = 'pickPic'
+include 'spark-mllib-job'
+include 'pick-pic-api'
+

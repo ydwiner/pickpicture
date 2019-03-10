@@ -1,0 +1,32 @@
+plugins {
+    id 'java'
+    id 'com.github.johnrengelman.shadow' version '2.0.4'
+    id 'application'
+}
+
+group 'org.ml'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.8
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly group: 'org.apache.spark', name: 'spark-streaming_2.11', version: '2.2.0'
+    implementation group: 'org.apache.spark', name: 'spark-core_2.11', version: '2.2.0'
+    compileOnly group: 'org.apache.spark', name: 'spark-sql_2.11', version: '2.2.0'
+    compileOnly group: 'org.apache.spark', name: 'spark-hive_2.11', version: '2.2.0'
+    implementation group: 'org.apache.spark', name: 'spark-mllib_2.11', version: '2.2.0'
+    implementation 'com.alibaba:fastjson:1.2.49'
+    implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.25'
+    compileOnly group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '7.0.0.jre8'
+    implementation group: 'org.openpnp', name: 'opencv', version: '3.4.2-1'
+}
+
+mainClassName = "org.spark.ml.StartLancher"
+
+shadowJar{
+    setZip64(true)
+}

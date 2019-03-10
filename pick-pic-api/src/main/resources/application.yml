@@ -1,0 +1,11 @@
+server:
+  port: 8115
+
+train:
+  trueDataPath: E:\\Temp\\mllib\\source
+  falseDataPath: E:\\Temp\\mllib\\false
+
+opencv:
+  libPath: F:\\BaiduNetdiskDownload\\opencv_java340-x64.dll
+
+
