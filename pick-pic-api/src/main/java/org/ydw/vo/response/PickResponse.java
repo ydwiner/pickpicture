@@ -9,12 +9,4 @@ import java.util.List;
 public class PickResponse {
 
     private List<PictrueCheckResultEntity> result;
-
-    public List<PictrueCheckResultEntity> getResult() {
-        return result;
-    }
-
-    public void setResult(List<PictrueCheckResultEntity> result) {
-        this.result = result;
-    }
 }
