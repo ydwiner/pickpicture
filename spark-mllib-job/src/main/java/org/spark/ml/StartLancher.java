@@ -14,6 +14,7 @@ public class StartLancher {
             SVMModel model = sparkJob.trainData(args[0],args[1],200);
             HashMap<String, Boolean> result = sparkJob.checkData(model, args[2]);
             System.out.println(result.toString());
+//            System.out.println(sparkJob.checkData5(args[0],args[1],200,args[2]).toString());
         }catch (Exception e){
             e.printStackTrace();
         }

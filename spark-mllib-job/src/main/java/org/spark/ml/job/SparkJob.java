@@ -2,6 +2,8 @@ package org.spark.ml.job;
 
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
+import org.apache.spark.mllib.classification.LogisticRegressionModel;
+import org.apache.spark.mllib.classification.LogisticRegressionWithSGD;
 import org.apache.spark.mllib.classification.SVMModel;
 import org.apache.spark.mllib.classification.SVMWithSGD;
 import org.apache.spark.mllib.linalg.Vectors;
@@ -105,6 +107,47 @@ public class SparkJob implements Serializable {
             throw new Exception("参数必须是文件");
         }
         result.put(checkDataFilePath,model.predict(Vectors.dense(openvc(checkDataFilePath))) == 1.0 ? true:false);
+        return result;
+    }
+
+    public HashMap<String,Double> checkData5(String TrueDataPath, String FalseDataPath,
+                                             int num,String checkDataPath) throws Exception{
+
+        HashMap<String,Double> result = new HashMap<>();
+        File fileDirT = new File(TrueDataPath);
+        File fileDirF = new File(FalseDataPath);
+
+        if(!fileDirT.isDirectory() || !fileDirF.isDirectory()){
+            throw new Exception("参数需要文件夹");
+        }
+        List<LabeledPoint> list = new ArrayList<>();
+        int i = 0;
+        int j = 0;
+        for(String fileName : fileDirT.list()){
+            LabeledPoint labeledPoint = new LabeledPoint(1.0, Vectors.dense(openvc(TrueDataPath + File.separator + fileName)));
+            list.add(labeledPoint);
+            i++;
+            System.out.println(i);
+        }
+        for(String fileName : fileDirF.list()){
+            LabeledPoint labeledPoint = new LabeledPoint(0.0, Vectors.dense(openvc(FalseDataPath + File.separator + fileName)));
+            list.add(labeledPoint);
+            j++;
+            System.out.println(j);
+        }
+
+        JavaRDD<LabeledPoint> rdd = JavaSparkContext.fromSparkContext(session.sparkContext()).parallelize(list);
+
+        LogisticRegressionModel model = LogisticRegressionWithSGD.train(rdd.rdd(), num);
+
+        File currentFileDir = new File(checkDataPath);
+        if(!currentFileDir.isDirectory()){
+            throw new Exception("参数必须是文件夹");
+        }
+        for(String str  : currentFileDir.list()){
+            result.put(checkDataPath + File.separator + str,model.predict(Vectors.dense(openvc(checkDataPath + File.separator + str))));
+        }
+
         return result;
     }
 
